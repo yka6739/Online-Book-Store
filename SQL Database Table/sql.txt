@@ -1,0 +1,129 @@
+CREATE TABLE messages (
+    id INT NOT NULL PRIMARY KEY IDENTITY,
+    firstname VARCHAR (100) NOT NULL,
+    lastname VARCHAR (100) NOT NULL,
+    email VARCHAR(150) NOT NULL,
+	phone VARCHAR(20) NOT NULL,
+	subject VARCHAR(255) NOT NULL,
+	message TEXT NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+
+
+
+CREATE TABLE books (
+    id INT NOT NULL PRIMARY KEY IDENTITY,
+    title VARCHAR (100) NOT NULL,
+    authors VARCHAR (255) NOT NULL,
+    isbn VARCHAR(20) NOT NULL,
+	num_pages INT NOT NULL,
+	price DECIMAL (16, 2) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+	image_filename VARCHAR (255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+INSERT INTO books (title, authors, isbn, num_pages, price, category, description, image_filename)
+VALUES
+('The economy today', 'Bradley R. Schiller', '007100940X', 969, 25.8, 'Economics', '', '11736965-L.jpg'),
+('Principles of political economy', 'John Stuart Mill', 'OL25914464M', 1013, 96.4, 'Economics', '', '9781573921091.jpg'),
+('The social cancer', 'Jose Rizal', 'OL14042495M', 502, 38.2, 'Economics', '', '5738053-L.jpg'),
+
+('Computer networks', 'Andrew S. Tanenbaum', '013162959X', 658, 99.9, 'Technology', '', '8052226-L.jpg'),
+('Computer concepts', 'June Jamrich Parsons and Dan Oja', '0760034397', 313, 75.0, 'Technology', '', '6601760-L.jpg'),
+('Introducing Computers', 'Robert H. Blissmer', '0471617830', 445, 45.5, 'Technology', '', '10967363-L.jpg'),
+
+('Elementary statistics', 'Mario F. Triola', '0805393277', 581, 105.5, 'Mathematics', '', '6972586-L.jpg'),
+('Calculus', 'Howard Anton, Howard A. Anton', '0471153060', 1130, 80.0, 'Mathematics', '', '4641132-L.jpg'),
+('Calculus made easy', 'Silvanus Phillips Thompson', '0312114109', 250, 75.5, 'Mathematics', '', '173276-L.jpg'),
+
+('Molecularizing biology and medicine', 'Soraya de Chadarevian and Harmke Kamminga', '9057022931', 304, 99.0, 'Medicine', '', '2286633-L.jpg'),
+('The price of health', 'James A. Gillespie', '0521381835', 358, 85.0, 'Medicine', '', '8460088-L.jpg'),
+('Creative malady', 'Pickering, George White Sir', '019519800X', 327, 60.0, 'Medicine', '', '10744695-L.jpg'),
+
+('Economics', 'Richard G. Lipsey, Christopher Ragan', '0060440163', 927, 98.5, 'Economics', '', '8188236-L.jpg'),
+('The wealth of nations', 'Adam Smith and Andrew Skinner', '067940564X', 620, 68.5, 'Economics', '', '417327-L.jpg'),
+('The human condition', 'Hannah Arendt', '0226025926', 365, 65.0, 'Economics', '', '5295596-L.jpg'),
+
+
+('The Interactive Computing', 'Kenneth C. Laudon', '0072472618', 632, 62.0, 'Technology', '', '63529-L.jpg'),
+('Computers', 'Larry E. Long, Larry Long, and Nancy Long', '013156241X', 677, 78.0, 'Technology', '', '10590390-L.jpg'),
+('Advances in Computers', 'Marshall C. Yovits', '012012114X', 299, 69.0, 'Technology', '', '9297071-L.jpg'),
+
+
+('Blood & bone', 'Angela Belli and John L. Coulehan', '0877456372', 160, 69.9, 'Medicine', '', '1630342-L.jpg'),
+('Chinese medical modernization', 'AnElissa Lucas', '0030594545', 188, 35.0, 'Medicine', '', '8365530-L.jpg'),
+('The doctor stories', 'Richard Selzer', '0312186878', 389, 40.0, 'Medicine', '', '1167760-L.jpg'),
+
+('The last physician', 'Elliott, Carl and John D. Lantos', '0822323362', 167, 52.9, 'History', '', '1558736-L.jpg'),
+('Brave New World', 'Aldous Huxley', '0060120355', 311, 30.0, 'History', '', '12643487-L.jpg'),
+('Il pastor fido', 'Battista Guarini', 'OL17974570M', 262, 32.5, 'History', '', '8989024-L.jpg'),
+
+('Introductory mathematical analysis', 'Ernest F. Haeussler, Richard S. Paul', '0130338559', 822, 79.9, 'Mathematics', '', '9153762-L.jpg'),
+('Introduction to finite mathematics', 'John G. Kemeny', '013468835X', 465, 59.9, 'Mathematics', '', '6689997-L.jpg'),
+('The language of mathematics', 'F. W. Land', 'OL5818599M', 264, 35.5, 'Mathematics', '', '6528622-L.jpg');
+
+
+
+
+
+
+
+
+
+CREATE TABLE users (
+    id INT NOT NULL PRIMARY KEY IDENTITY,
+    firstname VARCHAR (100) NOT NULL,
+    lastname VARCHAR (100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+	phone VARCHAR(20) NOT NULL,
+	address VARCHAR(255) NOT NULL,
+	password VARCHAR(255) NOT NULL,
+	role VARCHAR(10) NOT NULL CHECK (role IN('admin', 'client')),
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE password_resets (
+    email VARCHAR(150) NOT NULL PRIMARY KEY,
+	token VARCHAR(255) NOT NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+
+
+
+
+
+
+
+
+CREATE TABLE orders (
+    id INT NOT NULL PRIMARY KEY IDENTITY,
+	client_id INT NOT NULL,
+    order_date DATETIME NOT NULL,
+	shipping_fee DECIMAL (16, 2) NOT NULL,
+	delivery_address VARCHAR (255) NOT NULL,
+	payment_method VARCHAR (50) NOT NULL,
+	payment_status VARCHAR(20) NOT NULL CHECK (payment_status IN('pending', 'accepted', 'canceled')),
+	order_status VARCHAR(20) NOT NULL CHECK (
+		order_status IN('created', 'accepted', 'canceled', 'shipped', 'delivered', 'returned')
+	)
+);
+
+CREATE TABLE order_items (
+    id INT NOT NULL PRIMARY KEY IDENTITY,
+	order_id INT NOT NULL,
+	book_id INT NOT NULL,
+    quantity INT NOT NULL,
+	unit_price DECIMAL (16, 2) NOT NULL,
+);
+
+
